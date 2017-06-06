@@ -246,9 +246,11 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\AccomodationsController.cs" />
+    <Compile Include="Controllers\AccomodationTypesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AppUserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -260,6 +262,10 @@
     <Compile Include="Migrations\201706060900358_InitialDBModel.cs" />
     <Compile Include="Migrations\201706060900358_InitialDBModel.Designer.cs">
       <DependentUpon>201706060900358_InitialDBModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706061127154_DBData.cs" />
+    <Compile Include="Migrations\201706061127154_DBData.Designer.cs">
+      <DependentUpon>201706061127154_DBData.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accomodation.cs" />
@@ -359,6 +365,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706060900358_InitialDBModel.resx">
       <DependentUpon>201706060900358_InitialDBModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706061127154_DBData.resx">
+      <DependentUpon>201706061127154_DBData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
