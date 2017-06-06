@@ -13,7 +13,7 @@ namespace BookingApp.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201706051124597_InitialDBModel"; }
+            get { return "201706060900358_InitialDBModel"; }
         }
         
         string IMigrationMetadata.Source

@@ -248,6 +248,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -256,13 +257,9 @@
     <Compile Include="Migrations\201706040304228_Initial.Designer.cs">
       <DependentUpon>201706040304228_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706051124597_InitialDBModel.cs" />
-    <Compile Include="Migrations\201706051124597_InitialDBModel.Designer.cs">
-      <DependentUpon>201706051124597_InitialDBModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706051145147_UpdatedInitialModel.cs" />
-    <Compile Include="Migrations\201706051145147_UpdatedInitialModel.Designer.cs">
-      <DependentUpon>201706051145147_UpdatedInitialModel.cs</DependentUpon>
+    <Compile Include="Migrations\201706060900358_InitialDBModel.cs" />
+    <Compile Include="Migrations\201706060900358_InitialDBModel.Designer.cs">
+      <DependentUpon>201706060900358_InitialDBModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accomodation.cs" />
@@ -360,11 +357,8 @@
     <EmbeddedResource Include="Migrations\201706040304228_Initial.resx">
       <DependentUpon>201706040304228_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706051124597_InitialDBModel.resx">
-      <DependentUpon>201706051124597_InitialDBModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706051145147_UpdatedInitialModel.resx">
-      <DependentUpon>201706051145147_UpdatedInitialModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706060900358_InitialDBModel.resx">
+      <DependentUpon>201706060900358_InitialDBModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
