@@ -10,7 +10,6 @@ namespace BookingApp.Models
     public class AppUser
     {
         public int Id { get; set; }
-        public int FullName { get; set; }
 
         [StringLength(50)]
         public string Username { get; set; }

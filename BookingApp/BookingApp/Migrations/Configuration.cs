@@ -44,13 +44,13 @@ namespace BookingApp.Migrations
 
             context.AppUsers.AddOrUpdate(
             au => au.Username,
-            new AppUser { Username = "user1", Password = "user1", Email = "user1@live.com", FullName = 1 },
-            new AppUser { Username = "user2", Password = "user2", Email = "user2@live.com",FullName = 4 },
-            new AppUser { Username = "user3", Password = "user3", Email = "user3@live.com",FullName = 3 },
-            new AppUser { Username = "user4", Password = "user4", Email = "user4@live.com",FullName = 2},
-            new AppUser { Username = "owner1", Password = "owner1", Email = "owner1@live.com", FullName = 2 },
-             new AppUser { Username = "owner2", Password = "owner2", Email = "owner2@live.com", FullName = 2 },
-             new AppUser { Username = "admin", Password = "admin", Email = "admin@live.com", FullName = 2 }
+            new AppUser { Username = "user1", Password = "user1", Email = "user1@live.com" },
+            new AppUser { Username = "user2", Password = "user2", Email = "user2@live.com"},
+            new AppUser { Username = "user3", Password = "user3", Email = "user3@live.com" },
+            new AppUser { Username = "user4", Password = "user4", Email = "user4@live.com"},
+            new AppUser { Username = "owner1", Password = "owner1", Email = "owner1@live.com"},
+             new AppUser { Username = "owner2", Password = "owner2", Email = "owner2@live.com" },
+             new AppUser { Username = "admin", Password = "admin", Email = "admin@live.com"}
             );
 
             context.SaveChanges();
