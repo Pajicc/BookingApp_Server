@@ -328,7 +328,15 @@ namespace BookingApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new BAIdentityUser() { UserName = model.Email, Email = model.Email };
+            AppUser appUser = new AppUser { Username = model.Username, Password = model.Password, Email = model.Email };
+
+            var user = new BAIdentityUser() { UserName = model.Username, Email = model.Email, PasswordHash = BAIdentityUser.HashPassword(model.Password), appUserId = appUser.Id };
+
+            /*var userStore = new UserStore<BAIdentityUser>(context);
+            var userManager = new UserManager<BAIdentityUser>(userStore);
+
+            userManager.Create(user);
+            userManager.AddToRole(user.Id, "Admin");*/
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
