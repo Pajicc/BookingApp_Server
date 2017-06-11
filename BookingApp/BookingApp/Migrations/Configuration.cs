@@ -42,7 +42,7 @@ namespace BookingApp.Migrations
             new Country { Name = "Germany" }
             );
 
-            context.AppUsers.AddOrUpdate(
+            /*context.AppUsers.AddOrUpdate(
             au => au.Username,
             new AppUser { Username = "user1", Password = "user1", Email = "user1@live.com" },
             new AppUser { Username = "user2", Password = "user2", Email = "user2@live.com"},
@@ -51,7 +51,7 @@ namespace BookingApp.Migrations
             new AppUser { Username = "owner1", Password = "owner1", Email = "owner1@live.com"},
              new AppUser { Username = "owner2", Password = "owner2", Email = "owner2@live.com" },
              new AppUser { Username = "admin", Password = "admin", Email = "admin@live.com"}
-            );
+            );*/
 
             context.SaveChanges();
 
@@ -71,7 +71,7 @@ namespace BookingApp.Migrations
 
             context.SaveChanges();
 
-            context.Accomodations.AddOrUpdate(
+            /*context.Accomodations.AddOrUpdate(
             a => a.Name,
             new Accomodation { Name = "Hotel Park", AverageGrade = 5, Address = "Main Street", PlaceId = 1, Longtitude = 24.600, Latitude = 25.880, Description = "Hotel", ImageURL = "c:/users/img1.jpg", AppUserId = 5, AccomodationTypeId = 1, Approved = true },
            new Accomodation { Name = "Green House", AverageGrade = 4, Address = "5th Street", PlaceId = 2, Longtitude = 34.600, Latitude = 45.880, Description = "House", ImageURL = "c:/users/img2.jpg", AppUserId = 6, AccomodationTypeId = 2, Approved = true }
@@ -79,7 +79,7 @@ namespace BookingApp.Migrations
 
            context.SaveChanges();
 
-           context.Comments.AddOrUpdate(
+           /*context.Comments.AddOrUpdate(
            c => c.Text,
            new Comment { Text = "Great place", Grade = 4, AppUsersId = 1, AccomodationId = 1 },
            new Comment { Text = "Ok", Grade = 3, AppUsersId = 2, AccomodationId = 2 },
@@ -98,7 +98,7 @@ namespace BookingApp.Migrations
             context.RoomReservations.AddOrUpdate(
             r => r.StartDate,
             new RoomReservations { StartDate = DateTime.Now, EndDate = DateTime.Today, AppUserId = 1, RoomId = 1, Timestamp = DateTime.Now}
-            );
+            );*/
 
             context.SaveChanges();
 
@@ -134,7 +134,8 @@ namespace BookingApp.Migrations
 
             if (!context.Users.Any(u => u.UserName == "admin"))
             {
-                var user = new BAIdentityUser() { Id = "admin", UserName = "admin", Email = "admin@yahoo.com", PasswordHash = BAIdentityUser.HashPassword("admin"), appUserId = 7};
+                var user = new BAIdentityUser() { Id = "admin", UserName = "admin", Email = "admin@yahoo.com", PasswordHash = BAIdentityUser.HashPassword("admin")//, appUser
+            };
                 userManager.Create(user);
                 userManager.AddToRole(user.Id, "Admin");
             }

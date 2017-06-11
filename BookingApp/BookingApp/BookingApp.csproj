@@ -287,6 +287,14 @@
     <Compile Include="Migrations\201706090926253_NewDbData.Designer.cs">
       <DependentUpon>201706090926253_NewDbData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706101709257_BAIdentityUserIdOptional.cs" />
+    <Compile Include="Migrations\201706101709257_BAIdentityUserIdOptional.Designer.cs">
+      <DependentUpon>201706101709257_BAIdentityUserIdOptional.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706112024201_AppUserChanged.cs" />
+    <Compile Include="Migrations\201706112024201_AppUserChanged.Designer.cs">
+      <DependentUpon>201706112024201_AppUserChanged.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accomodation.cs" />
     <Compile Include="Models\AccomodationType.cs" />
@@ -352,7 +360,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -391,6 +401,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706090926253_NewDbData.resx">
       <DependentUpon>201706090926253_NewDbData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706101709257_BAIdentityUserIdOptional.resx">
+      <DependentUpon>201706101709257_BAIdentityUserIdOptional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706112024201_AppUserChanged.resx">
+      <DependentUpon>201706112024201_AppUserChanged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

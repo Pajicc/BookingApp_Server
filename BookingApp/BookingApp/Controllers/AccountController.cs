@@ -323,27 +323,36 @@ namespace BookingApp.Controllers
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
-            if (!ModelState.IsValid)
+            /*if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
+            }*/
+            BookingApp.Models.BAContext context = new BAContext();
 
-            AppUser appUser = new AppUser { Username = model.Username, Password = model.Password, Email = model.Email };
+            //var userStore = new UserStore<BAIdentityUser>(context);
+            //var userManager = new UserManager<BAIdentityUser>(userStore);
 
-            var user = new BAIdentityUser() { UserName = model.Username, Email = model.Email, PasswordHash = BAIdentityUser.HashPassword(model.Password), appUserId = appUser.Id };
+            AppUser apuser = new AppUser { Name = model.Username, Lastname = model.Lastname };
 
-            /*var userStore = new UserStore<BAIdentityUser>(context);
-            var userManager = new UserManager<BAIdentityUser>(userStore);
+            string guidId = Guid.NewGuid().ToString();
+            var user = new BAIdentityUser() { Id = guidId, UserName = model.Username, Email = model.Email, PasswordHash = BAIdentityUser.HashPassword(model.Password), appUser = apuser };
 
-            userManager.Create(user);
-            userManager.AddToRole(user.Id, "Admin");*/
-
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
+            //IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+           
+            /*if (!result.Succeeded)
             {
                 return GetErrorResult(result);
-            }
+            }*/
+
+            //UserManager.Create(user);
+            //UserManager.AddToRole(user.Id, model.Role);
+
+            var userStore = new UserStore<BAIdentityUser>(context);
+            
+            var userManager = new UserManager<BAIdentityUser>(userStore);
+            
+            userManager.Create(user);
+            userManager.AddToRole(user.Id, model.Role);
 
             return Ok();
         }

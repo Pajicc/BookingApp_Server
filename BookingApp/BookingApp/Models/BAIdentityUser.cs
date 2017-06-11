@@ -14,7 +14,7 @@ namespace BookingApp.Models
     public class BAIdentityUser : IdentityUser
     {
         [ForeignKey("appUser")]
-        public int appUserId { get; set; }
+        public int? appUserId { get; set; }
 
         public AppUser appUser { get; set; }
 

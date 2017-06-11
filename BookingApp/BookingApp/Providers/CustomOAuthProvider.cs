@@ -29,6 +29,8 @@ namespace BookingApp.Providers
 
             var allowedOrigin = "*";
 
+            BAContext baContext = new BAContext();
+
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             ApplicationUserManager userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
@@ -39,6 +41,22 @@ namespace BookingApp.Providers
             {
                 context.SetError("invalid_grant", "The user name or password is incorrect.!!!!");
                 return;
+            }
+
+            var userRole = user.Roles.First().RoleId;
+            var role = baContext.Roles.FirstOrDefault(r => r.Id == userRole);
+            
+            if (role.Name.Equals("Admin"))
+            {
+                context.OwinContext.Response.Headers.Add("Role", new[] { "Admin" });
+            }
+            else if (role.Name.Equals("Manager"))
+            {
+                context.OwinContext.Response.Headers.Add("Role", new[] { "Manager" });
+            }
+            else
+            { 
+                context.OwinContext.Response.Headers.Add("Role", new[] { "User" });
             }
 
             //if (!user.EmailConfirmed)
