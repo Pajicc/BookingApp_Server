@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using BookingApp.Models;
 using BookingApp.Providers;
 using BookingApp.Results;
+using System.Data.Entity.Migrations;
 
 namespace BookingApp.Controllers
 {

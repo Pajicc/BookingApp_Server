@@ -29,8 +29,6 @@ namespace BookingApp.Providers
 
             var allowedOrigin = "*";
 
-            BAContext baContext = new BAContext();
-
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             ApplicationUserManager userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
@@ -43,21 +41,28 @@ namespace BookingApp.Providers
                 return;
             }
 
-            var userRole = user.Roles.First().RoleId;
-            var role = baContext.Roles.FirstOrDefault(r => r.Id == userRole);
-            
-            if (role.Name.Equals("Admin"))
+            BAContext db = new BAContext();
+
+            var userRole = user.Roles.FirstOrDefault();
+            var role = db.Roles.SingleOrDefault(r => r.Id == userRole.RoleId);
+            var roleName = role?.Name;
+
+            if (roleName == "Admin")
             {
                 context.OwinContext.Response.Headers.Add("Role", new[] { "Admin" });
             }
-            else if (role.Name.Equals("Manager"))
+            else if (roleName == "Manager")
             {
                 context.OwinContext.Response.Headers.Add("Role", new[] { "Manager" });
             }
             else
-            { 
+            {
                 context.OwinContext.Response.Headers.Add("Role", new[] { "User" });
             }
+
+            //Mora se dodati u header response-a kako bi se se Role atribut
+            //mogao procitati na klijentskoj strani
+            context.OwinContext.Response.Headers.Add("Access-Control-Expose-Headers", new[] { "Role" });
 
             //if (!user.EmailConfirmed)
             //{
