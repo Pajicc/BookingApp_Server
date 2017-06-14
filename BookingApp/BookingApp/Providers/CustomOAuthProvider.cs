@@ -57,7 +57,7 @@ namespace BookingApp.Providers
             }
             else
             {
-                context.OwinContext.Response.Headers.Add("Role", new[] { "User" });
+                context.OwinContext.Response.Headers.Add("Role", new[] { "AppUser" });
             }
 
             //Mora se dodati u header response-a kako bi se se Role atribut
