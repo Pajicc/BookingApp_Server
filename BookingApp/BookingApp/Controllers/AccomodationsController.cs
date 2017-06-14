@@ -91,7 +91,7 @@ namespace BookingApp.Controllers
             return CreatedAtRoute("Acc", new { id = accomodation.Id }, accomodation);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("Accomodations/{id}")]
         [ResponseType(typeof(Accomodation))]
         public IHttpActionResult DeleteAccomodation(int id)

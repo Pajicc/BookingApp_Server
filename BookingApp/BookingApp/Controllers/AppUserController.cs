@@ -49,7 +49,7 @@ namespace BookingApp.Controllers
             }
         */
 
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("AppUser", Name = "AppU")]
         public IQueryable<AppUser> m1()
