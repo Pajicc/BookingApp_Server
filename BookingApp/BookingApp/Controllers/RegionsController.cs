@@ -96,7 +96,7 @@ namespace BookingApp.Controllers
         }
 
         // DELETE: api/Regions/5
-        [HttpPost]
+        [HttpDelete]
         [Route("Regions/{id}")]
         [ResponseType(typeof(Region))]
         public IHttpActionResult DeleteRegion(int id)

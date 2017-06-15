@@ -43,20 +43,20 @@ namespace BookingApp.Migrations
             
             CreateTable(
                 "dbo.Comments",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Grade = c.Double(nullable: false),
-                        Text = c.String(maxLength: 50),
-                        AccomodationId = c.Int(nullable: false),
-                        AppUsersId = c.Int(nullable: false),
-                    })
+               c => new
+               {
+                   Id = c.Int(nullable: false, identity: true),
+                   Grade = c.Double(nullable: false),
+                   Text = c.String(maxLength: 50),
+                   AccomodationId = c.Int(nullable: false),
+                   AppUsersId = c.Int(nullable: false),
+               })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Accomodations", t => t.AccomodationId, cascadeDelete: true)
                 .ForeignKey("dbo.AppUsers", t => t.AppUsersId, cascadeDelete: false)
                 .Index(t => t.AccomodationId)
                 .Index(t => t.AppUsersId);
-            
+
             CreateTable(
                 "dbo.RoomReservations",
                 c => new

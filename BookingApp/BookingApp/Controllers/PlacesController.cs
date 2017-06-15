@@ -41,7 +41,7 @@ namespace BookingApp.Controllers
         }
 
         // PUT: api/Places/5
-        [HttpGet]
+        [HttpPut]
         [Route("Places/{id}")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutPlace(int id, Place place)
@@ -95,7 +95,7 @@ namespace BookingApp.Controllers
         }
 
         // DELETE: api/Places/5
-        [HttpPost]
+        [HttpDelete]
         [Route("Places/{id}")]
         [ResponseType(typeof(Place))]
         public IHttpActionResult DeletePlace(int id)

@@ -31,6 +31,10 @@ namespace BookingApp.Providers
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
+            /*var roleHeader = "Role";
+            var userIDHeader = "appUserID";
+            context.OwinContext.Response.Headers.Add("Access-Control-Expose-Headers", new[] { roleHeader, userIDHeader });*/
+
             ApplicationUserManager userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
             BAIdentityUser user = await userManager.FindAsync(context.UserName, context.Password);
@@ -46,6 +50,7 @@ namespace BookingApp.Providers
             var userRole = user.Roles.FirstOrDefault();
             var role = db.Roles.SingleOrDefault(r => r.Id == userRole.RoleId);
             var roleName = role?.Name;
+          
 
             if (roleName == "Admin")
             {

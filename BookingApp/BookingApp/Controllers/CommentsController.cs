@@ -9,6 +9,9 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using BookingApp.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace BookingApp.Controllers
 {
@@ -17,21 +20,33 @@ namespace BookingApp.Controllers
     {
         private BAContext db = new BAContext();
 
-        // GET: api/Comments
+        private ApplicationUserManager _userManager;
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
         [HttpGet]
+        //[EnableQuery]
         [Route("Comments", Name = "Comm")]
         public IQueryable<Comment> GetComments()
         {
             return db.Comments;
         }
 
-        // GET: api/Comments/5
         [HttpGet]
-        [Route("Comments/{id}")]
-        [ResponseType(typeof(Comment))]
-        public IHttpActionResult GetComment(int id)
+        [Route("Comments/{accId}/{appId}")]
+        public IHttpActionResult GetComment(int accId, int appId)
         {
-            Comment comment = db.Comments.Find(id);
+            Comment comment = db.Comments.Find(accId, appId);
             if (comment == null)
             {
                 return NotFound();
@@ -40,20 +55,29 @@ namespace BookingApp.Controllers
             return Ok(comment);
         }
 
-        // PUT: api/Comments/5
         [HttpPut]
-        [Route("Comments/{id}")]
+        //[Authorize(Roles = "AppUser")]
+        [Route("Comments/{accId}/{appId}")]
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutComment(int id, Comment comment)
+        public IHttpActionResult PutComment(int accId, int appId, Comment comment)
         {
+            IdentityUser user = this.UserManager.FindById(User.Identity.GetUserId());
+
+            int? userId = (user as BAIdentityUser).appUserId;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != comment.Id)
+            if ((accId != comment.AccomodationId) || (appId != comment.AppUserId))
             {
                 return BadRequest();
+            }
+
+            if (comment.AppUserId != userId)
+            {
+                return Unauthorized();
             }
 
             db.Entry(comment).State = EntityState.Modified;
@@ -64,7 +88,7 @@ namespace BookingApp.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CommentExists(id))
+                if (!CommentExists(accId, appId))
                 {
                     return NotFound();
                 }
@@ -77,8 +101,8 @@ namespace BookingApp.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Comments
         [HttpPost]
+        //[Authorize(Roles = "AppUser")]
         [Route("Comments")]
         [ResponseType(typeof(Comment))]
         public IHttpActionResult PostComment(Comment comment)
@@ -91,20 +115,29 @@ namespace BookingApp.Controllers
             db.Comments.Add(comment);
             db.SaveChanges();
 
-            return CreatedAtRoute("Comm", new { id = comment.Id }, comment);
+            return CreatedAtRoute("Comm", new { controller = "Comment", accid = comment.AccomodationId, appId = comment.AppUserId }, comment);
         }
 
-        // DELETE: api/Comments/5
-        [HttpPost]
-        [Route("Comments/{id}")]
+        [HttpDelete]
+        //[Authorize(Roles = "AppUser")]
+        [Route("Comments/{accId}/{appId}")]
         [ResponseType(typeof(Comment))]
-        public IHttpActionResult DeleteComment(int id)
+        public IHttpActionResult DeleteComment(int accId, int appId)
         {
-            Comment comment = db.Comments.Find(id);
+            IdentityUser user = this.UserManager.FindById(User.Identity.GetUserId());
+
+            //int? userId = (user as BAIdentityUser).appUserId;
+
+            Comment comment = db.Comments.Find(accId, appId);
             if (comment == null)
             {
                 return NotFound();
             }
+
+            /*if (comment.AppUserId != userId)
+            {
+                return Unauthorized();
+            }*/
 
             db.Comments.Remove(comment);
             db.SaveChanges();
@@ -121,9 +154,10 @@ namespace BookingApp.Controllers
             base.Dispose(disposing);
         }
 
-        private bool CommentExists(int id)
+        private bool CommentExists(int accId, int appId)
         {
-            return db.Comments.Count(e => e.Id == id) > 0;
+            return db.Comments.Count(e => (e.AccomodationId == accId) && (e.AppUserId == appId)) > 0;
         }
+
     }
 }

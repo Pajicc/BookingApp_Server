@@ -95,7 +95,7 @@ namespace BookingApp.Controllers
         }
 
         // DELETE: api/RoomReservations/5
-        [HttpPost]
+        [HttpDelete]
         [Route("RoomReservations/{id}")]
         [ResponseType(typeof(RoomReservations))]
         public IHttpActionResult DeleteRoomReservations(int id)
