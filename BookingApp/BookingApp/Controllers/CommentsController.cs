@@ -126,7 +126,7 @@ namespace BookingApp.Controllers
         {
             IdentityUser user = this.UserManager.FindById(User.Identity.GetUserId());
 
-            //int? userId = (user as BAIdentityUser).appUserId;
+            int? userId = (user as BAIdentityUser).appUserId;
 
             Comment comment = db.Comments.Find(accId, appId);
             if (comment == null)
