@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using BookingApp.Models;
+using System.Web.Http.OData;
 
 namespace BookingApp.Controllers
 {
@@ -19,6 +20,7 @@ namespace BookingApp.Controllers
 
         // GET: api/Places
         [HttpGet]
+        [EnableQuery]
         [Route("Places", Name = "Plac")]
         public IQueryable<Place> GetPlaces()
         {
