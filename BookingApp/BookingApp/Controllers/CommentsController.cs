@@ -61,9 +61,9 @@ namespace BookingApp.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutComment(int accId, int appId, Comment comment)
         {
-            IdentityUser user = this.UserManager.FindById(User.Identity.GetUserId());
+            //IdentityUser user = this.UserManager.FindById(User.Identity.GetUserId());
 
-            int? userId = (user as BAIdentityUser).appUserId;
+            //int? userId = (user as BAIdentityUser).appUserId;
 
             if (!ModelState.IsValid)
             {
@@ -75,10 +75,10 @@ namespace BookingApp.Controllers
                 return BadRequest();
             }
 
-            if (comment.AppUserId != userId)
+           /* if (comment.AppUserId != userId)
             {
                 return Unauthorized();
-            }
+            }*/
 
             db.Entry(comment).State = EntityState.Modified;
 
@@ -124,9 +124,9 @@ namespace BookingApp.Controllers
         [ResponseType(typeof(Comment))]
         public IHttpActionResult DeleteComment(int accId, int appId)
         {
-            IdentityUser user = this.UserManager.FindById(User.Identity.GetUserId());
+            //IdentityUser user = this.UserManager.FindById(User.Identity.GetUserId());
 
-            int? userId = (user as BAIdentityUser).appUserId;
+            //int? userId = (user as BAIdentityUser).appUserId;
 
             Comment comment = db.Comments.Find(accId, appId);
             if (comment == null)

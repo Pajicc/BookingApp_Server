@@ -31,9 +31,9 @@ namespace BookingApp.Providers
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-            /*var roleHeader = "Role";
-            var userIDHeader = "appUserID";
-            context.OwinContext.Response.Headers.Add("Access-Control-Expose-Headers", new[] { roleHeader, userIDHeader });*/
+            var roleHeader = "Role";
+            var userIDHeader = "userID";
+            context.OwinContext.Response.Headers.Add("Access-Control-Expose-Headers", new[] { roleHeader, userIDHeader });
 
             ApplicationUserManager userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
@@ -65,9 +65,15 @@ namespace BookingApp.Providers
                 context.OwinContext.Response.Headers.Add("Role", new[] { "AppUser" });
             }
 
+            context.OwinContext.Response.Headers.Add("userId", new[] { user.appUserId.ToString() });
+
             //Mora se dodati u header response-a kako bi se se Role atribut
             //mogao procitati na klijentskoj strani
-            context.OwinContext.Response.Headers.Add("Access-Control-Expose-Headers", new[] { "Role" });
+            //var userIDHeader = "appUserID";
+
+            // context.OwinContext.Response.Headers.Add("Access-Control-Expose-Headers", new[] { "Role" });
+
+            // context.OwinContext.Response.Headers.Add("Access-Control-Expose-Headers", new[] { "appUserID" });
 
             //if (!user.EmailConfirmed)
             //{
