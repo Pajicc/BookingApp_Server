@@ -53,7 +53,10 @@ namespace BookingApp.Controllers
             {
                 return BadRequest();
             }
-
+            if (db.Accomodations.Any(x => (x.Name == accomodationType.Name)&& (x.Id != accomodationType.Id)))
+            {
+                return BadRequest("Name must be unique.");
+            }
             db.Entry(accomodationType).State = EntityState.Modified;
 
             try
@@ -83,6 +86,11 @@ namespace BookingApp.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            if(db.Accomodations.Any(x=> (x.Name == accomodationType.Name)))
+            {
+                return BadRequest("Name must be unique.");
             }
 
             db.AccomodationTypes.Add(accomodationType);
