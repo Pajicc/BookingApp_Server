@@ -45,6 +45,7 @@ namespace BookingApp.Controllers
         // PUT: api/RoomReservations/5
         [HttpPut]
         [Route("RoomReservations/{id}")]
+        [Authorize(Roles = "AppUser")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutRoomReservations(int id, RoomReservations roomReservations)
         {
@@ -57,6 +58,19 @@ namespace BookingApp.Controllers
             {
                 return BadRequest();
             }
+
+            var user = db.Users.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name));
+
+            if (user == null)
+            {
+                return BadRequest("You're not log in.");
+            }
+
+            if (roomReservations == null || !roomReservations.AppUserId.Equals(user.appUser.Id))
+            {
+                return BadRequest();
+            }
+
 
             db.Entry(roomReservations).State = EntityState.Modified;
 
@@ -82,10 +96,27 @@ namespace BookingApp.Controllers
         // POST: api/RoomReservations
         [HttpPost]
         [Route("RoomReservations")]
+        [Authorize(Roles = "AppUser")]
         [ResponseType(typeof(RoomReservations))]
         public IHttpActionResult PostRoomReservations(RoomReservations roomReservations)
         {
             if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (roomReservations.StartDate > roomReservations.EndDate)  
+            {
+                return BadRequest(ModelState);
+            }
+
+            IQueryable<RoomReservations> roomRes = db.RoomReservations.Where(r =>       //ako je vec zakazano u tom terminu
+                        r.RoomId.Equals(roomReservations.RoomId) &&
+                        ((roomReservations.StartDate >= r.StartDate && roomReservations.StartDate <= r.EndDate) ||
+                        (roomReservations.EndDate >= r.StartDate && roomReservations.EndDate <= r.EndDate) ||
+                        (roomReservations.StartDate <= r.StartDate && roomReservations.EndDate >= r.EndDate)));
+
+            if (roomRes.Count() != 0)
             {
                 return BadRequest(ModelState);
             }
@@ -99,6 +130,7 @@ namespace BookingApp.Controllers
         // DELETE: api/RoomReservations/5
         [HttpDelete]
         [Route("RoomReservations/{id}")]
+        [Authorize(Roles = "AppUser")]
         [ResponseType(typeof(RoomReservations))]
         public IHttpActionResult DeleteRoomReservations(int id)
         {
@@ -106,6 +138,18 @@ namespace BookingApp.Controllers
             if (roomReservations == null)
             {
                 return NotFound();
+            }
+
+            var user = db.Users.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name));
+
+            if (user == null)
+            {
+                return BadRequest("You're not log in.");
+            }
+
+            if (roomReservations == null || !roomReservations.AppUserId.Equals(user.appUser.Id))
+            {
+                return BadRequest();
             }
 
             db.RoomReservations.Remove(roomReservations);

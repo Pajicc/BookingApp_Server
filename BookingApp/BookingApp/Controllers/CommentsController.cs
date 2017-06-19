@@ -56,7 +56,7 @@ namespace BookingApp.Controllers
         }
 
         [HttpPut]
-        //[Authorize(Roles = "AppUser")]
+        [Authorize(Roles = "AppUser")]
         [Route("Comments/{accId}/{appId}")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutComment(int accId, int appId, Comment comment)
@@ -102,7 +102,7 @@ namespace BookingApp.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "AppUser")]
+        [Authorize(Roles = "AppUser")]
         [Route("Comments")]
         [ResponseType(typeof(Comment))]
         public IHttpActionResult PostComment(Comment comment)
@@ -112,14 +112,47 @@ namespace BookingApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Comments.Add(comment);
+            List<RoomReservations> reservations = ReservationsExist(comment);
+
+            if (reservations.Count == 0)
+            {
+                return BadRequest("You don't have reservations for this accommodation.");
+            }
+
+            RoomReservations reservation = GetReservation(reservations);
+
+            if (reservation == null || reservation.StartDate >= DateTime.Now)
+            {
+                return BadRequest("You can not comment accommodation until you are staying in the same.");
+            }
+
+            try
+            {
+                db.Comments.Add(comment);
+                db.SaveChanges();
+
+            }
+            catch (DbUpdateException e)
+            {
+                return Content(HttpStatusCode.Conflict, comment);
+            }
+
+            Accomodation accomodation = db.Accomodations.Where(a => a.Id == comment.AccomodationId).FirstOrDefault();
+
+            if (accomodation == null)
+            {
+                return BadRequest("There is no accommodation for which is creating comment.");
+            }
+
+            accomodation.AverageGrade = AverageGrade(comment.AccomodationId);
             db.SaveChanges();
+
 
             return CreatedAtRoute("Comm", new { controller = "Comment", accid = comment.AccomodationId, appId = comment.AppUserId }, comment);
         }
 
         [HttpDelete]
-        //[Authorize(Roles = "AppUser")]
+        [Authorize(Roles = "AppUser")]
         [Route("Comments/{accId}/{appId}")]
         [ResponseType(typeof(Comment))]
         public IHttpActionResult DeleteComment(int accId, int appId)
@@ -144,6 +177,40 @@ namespace BookingApp.Controllers
 
             return Ok(comment);
         }
+
+        private List<RoomReservations> ReservationsExist(Comment comment)
+        {
+            return db.RoomReservations.Where(resevation => resevation.Room.AccomodationId.Equals(comment.AccomodationId)
+                && resevation.AppUserId.Equals(comment.AppUserId)/*&& resevation.Canceled == false*/).ToList();
+        }
+
+        private RoomReservations GetReservation(List<RoomReservations> reservations)
+        {
+            return reservations.FirstOrDefault(res => res.StartDate.Equals(reservations.Min(o => o.StartDate)));
+        }
+
+        private double AverageGrade(int accId)
+        {
+            List<Comment> comments = db.Comments.Where(c => c.AccomodationId == accId).ToList();
+
+            if (comments.Count > 0)
+            {
+                double grade;
+                try
+                {
+                    grade = (double)(comments.Sum(c => c.Grade)) / (double)comments.Count;
+                }
+                catch (DivideByZeroException)
+                {
+                    grade = 0;
+                }
+
+                return Math.Round(grade, 1);
+            }
+
+            return 0.0;
+        }
+
 
         protected override void Dispose(bool disposing)
         {

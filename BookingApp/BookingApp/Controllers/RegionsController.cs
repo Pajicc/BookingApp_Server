@@ -45,6 +45,7 @@ namespace BookingApp.Controllers
         // PUT: api/Regions/5
         [HttpPut]
         [Route("Regions/{id}")]
+        [Authorize(Roles = "Admin")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutRegion(int id, Region region)
         {
@@ -87,6 +88,7 @@ namespace BookingApp.Controllers
 
         [HttpPost]
         [Route("Regions")]
+        [Authorize(Roles = "Admin")]
         [ResponseType(typeof(Region))]
         public IHttpActionResult PostRegion(Region region)
         {
@@ -107,6 +109,7 @@ namespace BookingApp.Controllers
         // DELETE: api/Regions/5
         [HttpDelete]
         [Route("Regions/{id}")]
+        [Authorize(Roles = "Admin")]
         [ResponseType(typeof(Region))]
         public IHttpActionResult DeleteRegion(int id)
         {

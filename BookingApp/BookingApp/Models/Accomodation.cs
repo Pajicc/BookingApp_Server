@@ -16,7 +16,7 @@ namespace BookingApp.Models
         public string Description { get; set; }
         [StringLength(50)]
         public string Address { get; set; }
-        public float AverageGrade { get; set; }
+        public double AverageGrade { get; set; }
         public double Latitude { get; set; }
         public double Longtitude { get; set; }
         [StringLength(50)]

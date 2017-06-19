@@ -41,6 +41,7 @@ namespace BookingApp.Controllers
 
         [HttpPut]
         [Route("AccomodationTypes/{id}")]
+        [Authorize(Roles = "Admin")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutAccomodationType(int id, AccomodationType accomodationType)
         {
@@ -53,7 +54,7 @@ namespace BookingApp.Controllers
             {
                 return BadRequest();
             }
-            if (db.Accomodations.Any(x => (x.Name == accomodationType.Name)&& (x.Id != accomodationType.Id)))
+            if (db.AccomodationTypes.Any(x => (x.Name == accomodationType.Name)&& (x.Id != accomodationType.Id)))
             {
                 return BadRequest("Name must be unique.");
             }
@@ -80,6 +81,7 @@ namespace BookingApp.Controllers
 
         [HttpPost]
         [Route("AccomodationTypes")]
+        [Authorize(Roles = "Admin")]
         [ResponseType(typeof(AccomodationType))]
         public IHttpActionResult PostAccomodationType(AccomodationType accomodationType)
         {
@@ -88,7 +90,7 @@ namespace BookingApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(db.Accomodations.Any(x=> (x.Name == accomodationType.Name)))
+            if(db.AccomodationTypes.Any(x=> (x.Name == accomodationType.Name)))
             {
                 return BadRequest("Name must be unique.");
             }
@@ -101,6 +103,7 @@ namespace BookingApp.Controllers
 
         [HttpDelete]
         [Route("AccomodationTypes/{id}")]
+        [Authorize(Roles = "Admin")]
         [ResponseType(typeof(AccomodationType))]
         public IHttpActionResult DeleteAccomodationType(int id)
         {

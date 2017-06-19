@@ -315,6 +315,14 @@
     <Compile Include="Migrations\201706142335348_CommentKeysChanged.Designer.cs">
       <DependentUpon>201706142335348_CommentKeysChanged.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706191655365_RoomResCanceledAndAvgGradeDouble.cs" />
+    <Compile Include="Migrations\201706191655365_RoomResCanceledAndAvgGradeDouble.Designer.cs">
+      <DependentUpon>201706191655365_RoomResCanceledAndAvgGradeDouble.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706191737480_DateTimeChanged.cs" />
+    <Compile Include="Migrations\201706191737480_DateTimeChanged.Designer.cs">
+      <DependentUpon>201706191737480_DateTimeChanged.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accomodation.cs" />
     <Compile Include="Models\AccomodationType.cs" />
@@ -431,6 +439,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706142335348_CommentKeysChanged.resx">
       <DependentUpon>201706142335348_CommentKeysChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706191655365_RoomResCanceledAndAvgGradeDouble.resx">
+      <DependentUpon>201706191655365_RoomResCanceledAndAvgGradeDouble.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706191737480_DateTimeChanged.resx">
+      <DependentUpon>201706191737480_DateTimeChanged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

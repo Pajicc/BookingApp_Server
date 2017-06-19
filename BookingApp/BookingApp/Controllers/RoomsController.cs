@@ -45,6 +45,7 @@ namespace BookingApp.Controllers
         // PUT: api/Rooms/5
         [HttpPut]
         [Route("Rooms/{id}")]
+        [Authorize(Roles = "Manager")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutRoom(int id, Room room)
         {
@@ -82,6 +83,7 @@ namespace BookingApp.Controllers
         // POST: api/Rooms
         [HttpPost]
         [Route("Rooms")]
+        [Authorize(Roles = "Manager")]
         [ResponseType(typeof(Room))]
         public IHttpActionResult PostRoom(Room room)
         {
@@ -99,6 +101,7 @@ namespace BookingApp.Controllers
         // DELETE: api/Rooms/5
         [HttpDelete]
         [Route("Rooms/{id}")]
+        [Authorize(Roles = "Manager")]
         [ResponseType(typeof(Room))]
         public IHttpActionResult DeleteRoom(int id)
         {

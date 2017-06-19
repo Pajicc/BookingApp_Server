@@ -45,6 +45,7 @@ namespace BookingApp.Controllers
 
         [HttpPut]
         [Route("Accomodations/{id}")]
+        [Authorize(Roles = "Manager, Admin")]   //za approve
         [ResponseType(typeof(void))]
         public IHttpActionResult PutAccomodation(int id, Accomodation accomodation)
         {
@@ -81,6 +82,7 @@ namespace BookingApp.Controllers
 
         [HttpPost]
         [Route("Accomodations")]
+        [Authorize(Roles = "Manager")]
         [ResponseType(typeof(Accomodation))]
         public IHttpActionResult PostAccomodation(Accomodation accomodation)
         {
@@ -97,6 +99,7 @@ namespace BookingApp.Controllers
 
         [HttpDelete]
         [Route("Accomodations/{id}")]
+        [Authorize(Roles = "Manager")]
         [ResponseType(typeof(Accomodation))]
         public IHttpActionResult DeleteAccomodation(int id)
         {
