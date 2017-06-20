@@ -41,6 +41,12 @@ namespace BookingApp.Controllers
 
             return Ok(roomReservations);
         }
+        [HttpGet]
+        [Route("RoomReservations/user/{id}")]
+        public IQueryable<RoomReservations> GetRoomResForAccAndUser(int id)
+        {
+            return db.RoomReservations.Where(x => x.AppUserId == id);
+        }
 
         // PUT: api/RoomReservations/5
         [HttpPut]
