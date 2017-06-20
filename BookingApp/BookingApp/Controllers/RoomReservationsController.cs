@@ -66,7 +66,7 @@ namespace BookingApp.Controllers
                 return BadRequest("You're not log in.");
             }
 
-            if (roomReservations == null || !roomReservations.AppUserId.Equals(user.appUser.Id))
+            if (roomReservations == null || !roomReservations.AppUserId.Equals(user.appUserId))
             {
                 return BadRequest();
             }
@@ -100,6 +100,7 @@ namespace BookingApp.Controllers
         [ResponseType(typeof(RoomReservations))]
         public IHttpActionResult PostRoomReservations(RoomReservations roomReservations)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -110,15 +111,31 @@ namespace BookingApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            IQueryable<RoomReservations> roomRes = db.RoomReservations.Where(r =>       //ako je vec zakazano u tom terminu
-                        r.RoomId.Equals(roomReservations.RoomId) &&
-                        ((roomReservations.StartDate >= r.StartDate && roomReservations.StartDate <= r.EndDate) ||
-                        (roomReservations.EndDate >= r.StartDate && roomReservations.EndDate <= r.EndDate) ||
-                        (roomReservations.StartDate <= r.StartDate && roomReservations.EndDate >= r.EndDate)));
+            List<RoomReservations> reservations = db.RoomReservations.Where(x => x.RoomId.Equals(roomReservations.RoomId)).ToList();
+            bool alreadyReserved = false;
 
-            if (roomRes.Count() != 0)
+            foreach (RoomReservations roomRes in reservations)
             {
-                return BadRequest(ModelState);
+                if (roomRes.Canceled != null)
+                {
+                    if (!roomRes.Canceled)  //ako nije cancelovana
+                    {
+                        if (roomRes.EndDate != null && roomRes.StartDate != null)   //vidi u kom datumu je slobodna
+                        {
+                            if ((DateTime)roomRes.EndDate >= (DateTime)roomReservations.StartDate && (DateTime)roomRes.StartDate <= (DateTime)roomReservations.StartDate
+                                || (DateTime)roomRes.EndDate <= (DateTime)roomReservations.EndDate && (DateTime)roomRes.StartDate >= (DateTime)roomReservations.EndDate)
+                            {
+                                alreadyReserved = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (alreadyReserved)    
+            {
+                return BadRequest("The room is already reserved by someone");
             }
 
             db.RoomReservations.Add(roomReservations);
@@ -140,20 +157,46 @@ namespace BookingApp.Controllers
                 return NotFound();
             }
 
-            var user = db.Users.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name));
+            var user = db.Users.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name)); //samo ako pokusava taj isti user da canceluje
 
             if (user == null)
             {
-                return BadRequest("You're not log in.");
+                return BadRequest("You're not logged in.");
             }
 
-            if (roomReservations == null || !roomReservations.AppUserId.Equals(user.appUser.Id))
+            if (roomReservations == null || !roomReservations.AppUserId.Equals(user.appUserId))
             {
                 return BadRequest();
             }
 
+            /*if (roomReservations.StartDate <= DateTime.Now)
+            {
+                return BadRequest("You are supposed to be in your accommodation right now, can not cancel reservation!");
+            }*/
+
+            //roomReservations.Canceled = true;
+            //db.Entry(roomReservations).State = System.Data.Entity.EntityState.Modified;
+
             db.RoomReservations.Remove(roomReservations);
             db.SaveChanges();
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                bool exist = db.RoomReservations.Count(e => (e.Id == id)) > 0;
+
+                if (!exist)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return Ok(roomReservations);
         }

@@ -55,15 +55,19 @@ namespace BookingApp.Controllers
             return Ok(comment);
         }
 
+        [HttpGet]
+        [Route("Comments/{id}")]
+        public IQueryable<Comment> GetCommentForAccomodation(int id)
+        {
+            return db.Comments.Where(x => x.AccomodationId == id);
+        }
+
         [HttpPut]
         [Authorize(Roles = "AppUser")]
         [Route("Comments/{accId}/{appId}")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutComment(int accId, int appId, Comment comment)
-        {
-            //IdentityUser user = this.UserManager.FindById(User.Identity.GetUserId());
-
-            //int? userId = (user as BAIdentityUser).appUserId;
+        {           
 
             if (!ModelState.IsValid)
             {
@@ -75,10 +79,17 @@ namespace BookingApp.Controllers
                 return BadRequest();
             }
 
-           /* if (comment.AppUserId != userId)
+            var user = db.Users.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name));
+
+            if (user == null)
             {
-                return Unauthorized();
-            }*/
+                return BadRequest("You are not logged in.");
+            }
+
+            if (comment.AppUserId != user.appUserId)
+            {
+                BadRequest("You don't have right to change the comment.");
+            }
 
             db.Entry(comment).State = EntityState.Modified;
 
@@ -112,7 +123,7 @@ namespace BookingApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            List<RoomReservations> reservations = ReservationsExist(comment);
+            /*List<RoomReservations> reservations = ReservationsExist(comment);
 
             if (reservations.Count == 0)
             {
@@ -123,7 +134,14 @@ namespace BookingApp.Controllers
 
             if (reservation == null || reservation.StartDate >= DateTime.Now)
             {
-                return BadRequest("You can not comment accommodation until you are staying in the same.");
+                return BadRequest("You can't comment on accommodation in which you are not staying");
+            }*/
+
+            Accomodation accomodation = db.Accomodations.Where(a => a.Id == comment.AccomodationId).FirstOrDefault();
+
+            if (accomodation == null)
+            {
+                return BadRequest("You can't post comment because accommodation no longer exists");
             }
 
             try
@@ -135,13 +153,6 @@ namespace BookingApp.Controllers
             catch (DbUpdateException e)
             {
                 return Content(HttpStatusCode.Conflict, comment);
-            }
-
-            Accomodation accomodation = db.Accomodations.Where(a => a.Id == comment.AccomodationId).FirstOrDefault();
-
-            if (accomodation == null)
-            {
-                return BadRequest("There is no accommodation for which is creating comment.");
             }
 
             accomodation.AverageGrade = AverageGrade(comment.AccomodationId);
@@ -157,22 +168,36 @@ namespace BookingApp.Controllers
         [ResponseType(typeof(Comment))]
         public IHttpActionResult DeleteComment(int accId, int appId)
         {
-            //IdentityUser user = this.UserManager.FindById(User.Identity.GetUserId());
-
-            //int? userId = (user as BAIdentityUser).appUserId;
-
+                 
             Comment comment = db.Comments.Find(accId, appId);
             if (comment == null)
             {
                 return NotFound();
             }
 
-            /*if (comment.AppUserId != userId)
+            var user = db.Users.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name));
+
+            if (user == null)
             {
-                return Unauthorized();
-            }*/
+                return BadRequest("You are not logged in.");
+            }
+
+            if (comment.AppUserId != user.appUserId)
+            {
+                BadRequest("You don't have right to delete the comment.");
+            }
 
             db.Comments.Remove(comment);
+            db.SaveChanges();
+
+            Accomodation accomodation = db.Accomodations.Where(a => a.Id == comment.AccomodationId).FirstOrDefault();   //ponovo izracunamo avrg grade
+
+            if (accomodation == null)
+            {
+                return BadRequest("There is no accommodation for which is changing comment.");
+            }
+
+            accomodation.AverageGrade = AverageGrade(comment.AccomodationId);
             db.SaveChanges();
 
             return Ok(comment);
@@ -181,7 +206,7 @@ namespace BookingApp.Controllers
         private List<RoomReservations> ReservationsExist(Comment comment)
         {
             return db.RoomReservations.Where(resevation => resevation.Room.AccomodationId.Equals(comment.AccomodationId)
-                && resevation.AppUserId.Equals(comment.AppUserId)/*&& resevation.Canceled == false*/).ToList();
+                && resevation.AppUserId.Equals(comment.AppUserId) && resevation.Canceled == false).ToList();
         }
 
         private RoomReservations GetReservation(List<RoomReservations> reservations)

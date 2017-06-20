@@ -11,7 +11,7 @@ namespace BookingApp.Models
         public int Id { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTime? Timestamp { get; set; }
 
 
         [ForeignKey("AppUser")]

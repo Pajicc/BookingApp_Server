@@ -7,13 +7,13 @@ namespace BookingApp.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class DateTimeChanged : IMigrationMetadata
+    public sealed partial class RoomResNullableDates : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(DateTimeChanged));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(RoomResNullableDates));
         
         string IMigrationMetadata.Id
         {
-            get { return "201706191737480_DateTimeChanged"; }
+            get { return "201706192004496_RoomResNullableDates"; }
         }
         
         string IMigrationMetadata.Source

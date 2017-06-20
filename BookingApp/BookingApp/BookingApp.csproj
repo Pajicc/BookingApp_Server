@@ -319,9 +319,9 @@
     <Compile Include="Migrations\201706191655365_RoomResCanceledAndAvgGradeDouble.Designer.cs">
       <DependentUpon>201706191655365_RoomResCanceledAndAvgGradeDouble.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706191737480_DateTimeChanged.cs" />
-    <Compile Include="Migrations\201706191737480_DateTimeChanged.Designer.cs">
-      <DependentUpon>201706191737480_DateTimeChanged.cs</DependentUpon>
+    <Compile Include="Migrations\201706192004496_RoomResNullableDates.cs" />
+    <Compile Include="Migrations\201706192004496_RoomResNullableDates.Designer.cs">
+      <DependentUpon>201706192004496_RoomResNullableDates.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accomodation.cs" />
@@ -443,8 +443,8 @@
     <EmbeddedResource Include="Migrations\201706191655365_RoomResCanceledAndAvgGradeDouble.resx">
       <DependentUpon>201706191655365_RoomResCanceledAndAvgGradeDouble.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706191737480_DateTimeChanged.resx">
-      <DependentUpon>201706191737480_DateTimeChanged.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706192004496_RoomResNullableDates.resx">
+      <DependentUpon>201706192004496_RoomResNullableDates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
