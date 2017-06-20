@@ -62,7 +62,9 @@ namespace BookingApp.Controllers
         //[ResponseType(typeof(AppUser))]
         public IHttpActionResult m2(int id)
         {
-            bool isAdmin = UserManager.IsInRole(User.Identity.Name, "Admin");//User.Identity.Name => Username Identity User-a! UserManager trazi po njegovom username-u, i onda poredi! 
+           // var user = db.Users.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name));
+
+            /*bool isAdmin = UserManager.IsInRole(User.Identity.Name, "Admin");//User.Identity.Name => Username Identity User-a! UserManager trazi po njegovom username-u, i onda poredi! 
             var user = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);//Vadimo iz Identity baze po username-u Identity User-a, koji u sebi sadrzi AppUser-a!
             if (isAdmin || (user != null && user.appUserId.Equals(id)))//Ako korisnik nije admin, i nije AppUser koji trazi podatke o sebi, nije autorizovan!
             {
@@ -73,9 +75,19 @@ namespace BookingApp.Controllers
                 }
 
                 return Ok(appUser);
-            }
+            }*/
+            //if(user != null)
+           // {
+                AppUser appUser = db.AppUsers.Find(id);
+                if(appUser == null)
+                {
+                    return NotFound();
+                }
+                return Ok(appUser);
+          //  }
 
-            return Unauthorized();
+
+           // return Unauthorized();
         }
 
         [Authorize]
