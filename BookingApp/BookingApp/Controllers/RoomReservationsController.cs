@@ -122,10 +122,10 @@ namespace BookingApp.Controllers
 
             foreach (RoomReservations roomRes in reservations)
             {
-                if (roomRes.Canceled != null)
+                /*if (roomRes.Canceled != null)
                 {
                     if (!roomRes.Canceled)  //ako nije cancelovana
-                    {
+                    {*/
                         if (roomRes.EndDate != null && roomRes.StartDate != null)   //vidi u kom datumu je slobodna
                         {
                             if ((DateTime)roomRes.EndDate >= (DateTime)roomReservations.StartDate && (DateTime)roomRes.StartDate <= (DateTime)roomReservations.StartDate
@@ -135,13 +135,13 @@ namespace BookingApp.Controllers
                                 break;
                             }
                         }
-                    }
-                }
+                //    }
+                //}
             }
 
             if (alreadyReserved)    
             {
-                return BadRequest("The room is already reserved by someone");
+                return BadRequest("The room is already reserved in that period");
             }
 
             db.RoomReservations.Add(roomReservations);
